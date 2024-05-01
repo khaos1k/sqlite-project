@@ -66,7 +66,7 @@
         if(currentEntries == 0) {
             isDisabled = true;
             isDisabled2 = false;
-        } else if(currentEntries == 950) {
+        } else if(currentEntries == 1050) {
             isDisabled2 = true;
         }
         else {
@@ -109,6 +109,5 @@
     </tbody>
 </table>
 <button class="button is-white is-primary" type="button" on:click={decreaseNumber} disabled={isDisabled}>Előző oldal</button>
-<p>{currentPage} / 20</p>
 <button class="button is-white is-primary" type="button" on:click={updateNumber} disabled={isDisabled2}>Következő oldal</button>
 </div>

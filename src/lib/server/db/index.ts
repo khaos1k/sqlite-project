@@ -73,8 +73,8 @@ export function searchMovies(searchTerm: string, limit = 50): Film[] {
     f.release_year as releaseYear,
     c.name as category
 FROM film f 
-JOIN film_category fc ON f.film_id = fc.film_id
-JOIN category c ON fc.category_id = c.category_id
+LEFT JOIN film_category fc ON f.film_id = fc.film_id
+LEFT JOIN category c ON fc.category_id = c.category_id
 WHERE lower(title) like lower('%' || $searchTerm || '%')
 limit $limit
 
@@ -82,12 +82,4 @@ limit $limit
     const statement = db.prepare(sql);
     const rows = statement.all({ searchTerm, limit })
     return rows as Film[];
-}
-
-export function insertRecord(title: string, releaseYear: number, category: string, description: string): void {
-    const sql = `
-    
-    `
-    const statement = db.prepare(sql);
-    statement.run( {title, releaseYear, category, description} );
 }
