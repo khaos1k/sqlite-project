@@ -10,7 +10,7 @@ export function getInitialFilms(limit = 50, offset: number): Film[] {
     SELECT f.film_id as filmId,
 			 f.title as title,
 			 f.description as description,
-       f.release_year as releaseYear,
+       CAST(f.release_year AS INTEGER) as releaseYear,
 			 c.name as category
     FROM film f 
     JOIN film_category fc ON f.film_id = fc.film_id
@@ -28,7 +28,7 @@ export function getNextFilms(limit = 50, offset: number): Film[] {
     SELECT f.film_id as filmId,
 			 f.title as title,
 			 f.description as description,
-       f.release_year as releaseYear,
+       CAST(f.release_year AS INTEGER) as releaseYear,
 			 c.name as category
     FROM film f 
     JOIN film_category fc ON f.film_id = fc.film_id
@@ -44,7 +44,7 @@ export function getNextFilms(limit = 50, offset: number): Film[] {
 // This function gets the specific movie the user searches for by ID
 export function getMovieById(filmId: number): Movie{
     const sql = `
-    SELECT f.title, f.description, f.release_year AS releaseYear, c.name AS category, l.name AS language, f.film_id AS movieId FROM film f
+    SELECT f.title, f.description, CAST(f.release_year AS INTEGER) AS releaseYear, c.name AS category, l.name AS language, f.film_id AS movieId FROM film f
     JOIN film_category fc ON f.film_id = fc.film_id
     JOIN category c ON fc.category_id = c.category_id
     JOIN language l ON f.language_id = l.language_id
@@ -70,7 +70,7 @@ export function searchMovies(searchTerm: string, limit = 50): Film[] {
     SELECT f.film_id as filmId,
     f.title as title,
     f.description as description,
-    f.release_year as releaseYear,
+    CAST(f.release_year AS INTEGER) as releaseYear,
     c.name as category
 FROM film f 
 LEFT JOIN film_category fc ON f.film_id = fc.film_id

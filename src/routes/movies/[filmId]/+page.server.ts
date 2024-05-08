@@ -9,6 +9,7 @@ interface UpdateData {
     movieId: number;
     movieTitle?: string;
     movieDescription?: string;
+    releaseYear?: number
 }
 
 export const load = (({params}) => {
@@ -40,18 +41,24 @@ export const actions: Actions = {
         const movieIdStr = data.get('movieId')?.toString();
         const movieId = movieIdStr ? parseInt(movieIdStr) : null;
 
+        const releaseYearStr = data.get('releaseYear')?.toString();
+        const releaseYear = releaseYearStr ? parseInt(releaseYearStr) : null;
 
-        if(!movieId){
+        if(!movieId || !releaseYear){
             throw error(400, 'Id not found!')
         }
 
         const movieTitle = data.get('title')?.toString();
+
         const movieDescription = data.get('description')?.toString();
+
+        
 
         const updateData: UpdateData = {
             movieId,
             movieTitle,
-            movieDescription
+            movieDescription,
+            releaseYear
         };
         
         updateMovie(updateData);
@@ -71,6 +78,11 @@ function updateMovie(updateData: UpdateData): void {
     if(updateData.movieDescription) {
         query += 'description = $description, ';
         queryParams.description = updateData.movieDescription;
+    }
+
+    if(updateData.releaseYear) {
+        query += 'release_year = $releaseYear, ';
+        queryParams.releaseYear = Math.floor(updateData.releaseYear);
     }
 
     query = query.slice(0, -2);
