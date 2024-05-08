@@ -27,16 +27,23 @@ export const actions: Actions = {
 function insertRecord(title: string, releaseYear: number, description: string): void {
     const query = 'INSERT INTO film (film_id, title, release_year, description, language_id, last_update) VALUES ($filmId, $title, $releaseYear, $description, $languageId, CURRENT_TIMESTAMP)';
     const filmId = generateUniqueFilmId();
-    const languageId = 1;
+    const languageId = generateLanguageId();
     const queryParams = { filmId: filmId, title: title, releaseYear: releaseYear, 
         description: description,
         languageId: languageId};
 
+    const categoryQuery = 'INSERT INTO film_category (film_id, category_id, last_update) VALUES ($filmId, $categoryId, CURRENT_TIMESTAMP)';
+    const categoryQueryParams = {
+        filmId: filmId,
+        categoryId: generateCategoryId()
+    };
+
+    const categoryStatement = db.prepare(categoryQuery);
     const statement = db.prepare(query);
-    console.log('Query parameters:', queryParams);
-    const films = getMovies();
-    console.log(films);
+
+
     statement.run(queryParams);
+    categoryStatement.run(categoryQueryParams);
 }
 
 function generateUniqueFilmId(): number {
@@ -44,9 +51,10 @@ function generateUniqueFilmId(): number {
     const { maxId } = db.prepare(query).get() as { maxId: number | null };
     return maxId ? maxId + 1 : 1;
 }
+function generateLanguageId(): number {
+    return Math.floor(Math.random() * 6) + 1;
+}
 
-function getMovies(): any[] {
-    const query = 'SELECT * FROM film WHERE film_id > 990';
-    const statement = db.prepare(query);
-    return statement.all();
+function generateCategoryId(): number {
+    return Math.floor(Math.random() * 16) + 1;
 }

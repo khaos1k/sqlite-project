@@ -1,9 +1,9 @@
 <script lang="ts">
     import type { PageData } from './$types';
-    let title = 'test';
-    let releaseYear = 2024;
+    let title = '';
+    let releaseYear = 0;
     let category = '';
-    let description = 'test';
+    let description = '';
 </script>
 
 <h1 class="is-size-1 block ml-2">Insert new record</h1>
@@ -28,16 +28,6 @@
     class="input mb-5"
     style="max-width: 80ch;"
     bind:value="{releaseYear}"
-/>
-
-<p class="block">Category</p>
-<input
-    type="text"
-    name="category"
-    placeholder="Category..."
-    class="input mb-5"
-    style="max-width: 80ch;"
-    bind:value="{category}"
 />
 <p class="block">Description</p>
 <input
